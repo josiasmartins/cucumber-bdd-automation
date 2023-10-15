@@ -1,5 +1,6 @@
 package bdd.automation.api.steps;
 
+import io.cucumber.docstring.DocString;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.java.pt.Entao;
@@ -8,13 +9,13 @@ import io.cucumber.java.pt.Entao;
 import io.cucumber.java.pt.Quando;
 import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
+import org.hamcrest.CoreMatchers;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
-import static org.hamcrest.CoreMatchers.is;
 
 
 public class UserStepDefinitions {
@@ -44,6 +45,22 @@ public class UserStepDefinitions {
                 then().
                 contentType(ContentType.JSON).
                 statusCode(HttpStatus.SC_OK).
-                body("username", is( expectedUser.get("username")));
+                body("username", CoreMatchers.is( expectedUser.get("username")));
     }
+
+    @Quando("eu faço um POST para {word} com a seguinte docString:")
+    public void euFaçoUmPOSTParaVUserComASeguinteDocString(String endpoint, DocString docString) {
+        expectedUser.put("username", "thenUser");
+
+        given()
+                .contentType(ContentType.JSON)
+                .body(docString.getContent()).
+        when()
+                .post("http://localhost:12345/api" + endpoint).
+        then()
+                .contentType(ContentType.JSON)
+                .statusCode(HttpStatus.SC_OK);
+
+    }
+
 }
