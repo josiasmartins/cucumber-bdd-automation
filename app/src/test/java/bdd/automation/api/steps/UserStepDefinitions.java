@@ -1,6 +1,8 @@
 package bdd.automation.api.steps;
 
+import bdd.automation.api.support.domain.User;
 import io.cucumber.docstring.DocString;
+import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.java.pt.Entao;
@@ -16,11 +18,22 @@ import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
+import static org.hamcrest.CoreMatchers.is;
 
 
 public class UserStepDefinitions {
 
+    private static final String CREATE_USER_ENDPOINT = "/v3/user";
+    private static final String USER_ENDPOINT = "/v3/user/{name}";
+
+    private User user;
+
     private Map<String, String> expectedUser = new HashMap<>();
+
+    @Before
+    public void init() {
+        new config().setup();
+    }
 
     @When("I do a POST to {word} with the following values:")
     @Quando("eu faço um POST para {word} com os seguintes valores:")
@@ -46,7 +59,7 @@ public class UserStepDefinitions {
         then().
 //                contentType(ContentType.JSON). // não precisa porque já foi setado na classe config
                 statusCode(HttpStatus.SC_OK).
-                body("username", CoreMatchers.is( expectedUser.get("username")));
+                body("username", is( expectedUser.get("username")));
     }
 
     @Quando("eu faço um POST para {word} com a seguinte docString:")
@@ -64,4 +77,30 @@ public class UserStepDefinitions {
 
     }
 
+    @Quando("crio um usuario")
+    public void crioUmUsuario() {
+
+        user = User.builder().email("rafael@gmail.com").build();
+
+        given()
+                .body(user).
+        when()
+                .post(CREATE_USER_ENDPOINT).
+        then()
+                .statusCode(HttpStatus.SC_OK);
+
+    }
+
+    @Entao("o usuário é salvo no sistema")
+    public void oUsuárioÉSalvoNoSistema() {
+        given()
+                .pathParam("name", user.getUsername()).
+        when()
+                .get(USER_ENDPOINT).
+        then().
+                statusCode(HttpStatus.SC_OK)
+                .body("username", CoreMatchers.is(user.getUsername()));
+
+
+    }
 }
