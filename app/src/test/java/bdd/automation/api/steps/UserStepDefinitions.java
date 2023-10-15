@@ -33,7 +33,7 @@ public class UserStepDefinitions {
                 when().
                 post("http://localhost:12345/api" + endpoint).
                 then().
-                contentType(ContentType.JSON).
+//                contentType(ContentType.JSON).
                 statusCode(HttpStatus.SC_OK);
     }
 
@@ -42,8 +42,9 @@ public class UserStepDefinitions {
     public void iReceiveTheCreatedUserWhenIDoAGETToVUserRafael(String endpoint) {
         when().
                 get("http://localhost:12345/api" + endpoint).
-                then().
-                contentType(ContentType.JSON).
+//                get(endpoint). // com a classe config
+        then().
+//                contentType(ContentType.JSON). // não precisa porque já foi setado na classe config
                 statusCode(HttpStatus.SC_OK).
                 body("username", CoreMatchers.is( expectedUser.get("username")));
     }
