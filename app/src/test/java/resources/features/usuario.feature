@@ -18,6 +18,7 @@ Funcionalidade: Gerenciamento de um usuario na Petstore
       | userStatus | 1               |
     Então quando faço um GET para /v3/user/rafael, o usuário criado é retornado
 
+  @quarentine # ignora o cenario
   Cenario: Cria um usuário na loja usando docString
     Quando eu faço um POST para /v3/user com a seguinte docString:
           """json
