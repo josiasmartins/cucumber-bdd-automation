@@ -3,6 +3,7 @@ package bdd.automation.api.steps;
 import bdd.automation.api.support.api.UserApi;
 import bdd.automation.api.support.domain.User;
 import io.cucumber.docstring.DocString;
+import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.pt.Entao;
 //import io.cucumber.java.pt.Então;
@@ -33,13 +34,18 @@ public class UserStepDefinitions {
 
     @Before
     public void init() {
-        config config = new config();
+        Config config = new Config();
 
         config.setup();
-        config.doSomething();
-        config.doFirst();
-        config.doSecond();
-        config.doThird();
+//        config.doSomething();
+//        config.doFirst();
+//        config.doSecond();
+//        config.doThird();
+    }
+
+    @After
+    public void after_init() {
+        new Config().deleteAllUsers();
     }
 
 //    @When("I do a POST to {word} with the following values:")
