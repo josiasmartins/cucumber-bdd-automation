@@ -33,7 +33,13 @@ public class UserStepDefinitions {
 
     @Before
     public void init() {
-        new config().setup();
+        config config = new config();
+
+        config.setup();
+        config.doSomething();
+        config.doFirst();
+        config.doSecond();
+        config.doThird();
     }
 
 //    @When("I do a POST to {word} with the following values:")

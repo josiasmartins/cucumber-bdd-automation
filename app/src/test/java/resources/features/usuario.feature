@@ -52,7 +52,7 @@ Funcionalidade: Gerenciamento de um usuario na Petstore
 #      """
 #    Entao quando faço um GET para /v3/user/rafael, o usuario criado é retornado
 
-
+  @primeira @segunda
   Cenario: Cria usuário na loja refletindo o negócio
     Quando crio um usuario
 #    Entao recebo o status code 200
