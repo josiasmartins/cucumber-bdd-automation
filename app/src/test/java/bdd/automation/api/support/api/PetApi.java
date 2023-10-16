@@ -6,8 +6,6 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
@@ -15,6 +13,8 @@ import static io.restassured.RestAssured.given;
 public class PetApi {
 
     private static final String FIND_PETS_BY_STATUS_ENPOINT = "http://localhost:12345/api/v3/pet/findByStatus?status={status}";
+    private static final String ENDPOINT_PET = "http://localhost:12345/api/v3/pet/{id}";
+
 
     public List<Pet> getPetsByStatus(String status) {
         return given()
@@ -30,6 +30,22 @@ public class PetApi {
                 .pathParam("status", status)
             .when()
                 .get(FIND_PETS_BY_STATUS_ENPOINT);
+    }
+
+    public void deletePetsByStatus(String status) {
+        List<Integer> petsId = given()
+                    .pathParam("status", status)
+                .when()
+                    .get(FIND_PETS_BY_STATUS_ENPOINT)
+                .thenReturn()
+                    .path("id");
+
+        if (!petsId.isEmpty()) {
+            for (Integer id : petsId) {
+                given().pathParam("id", id).delete(ENDPOINT_PET);
+            }
+        }
+
     }
 
     public List<Pet> getPetsByStatus2(String status) {

@@ -26,7 +26,7 @@ public class PetStepDefinitions {
         petApi = new PetApi();
     }
 
-    @Dado("que eu possuo animais available")
+    @Dado("que eu possua animais {word}")
     public void queEuPossuoAnimaisAvailable() throws JsonProcessingException {
 
 //        Pet pet = Pet.builder().build();
@@ -62,5 +62,15 @@ public class PetStepDefinitions {
                         "size()", Matchers.is(actualPets.size()),
                         "findAll { it.status == 'available' }.size()", Matchers.is(actualPets.size())
                 );
+    }
+
+    @Entao("eu recebo a lista com {int} animal/animais")
+    public void euReceboAListaComAnimais(int petQuantity) {
+        MatcherAssert.assertThat(actualPets, Matchers.is(petQuantity));
+    }
+
+    @Dado("que eu não possua animais {word}")
+    public void queEuNãoPossuaAnimaisSold(String status) {
+        petApi.deletePetsByStatus(status);
     }
 }
