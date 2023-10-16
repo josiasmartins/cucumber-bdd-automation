@@ -41,7 +41,7 @@ public class PetStepDefinitions {
 
     @Quando("eu pesquiso por todos os animais {word}")
     public void euPesquisoPorTodosOsAnimaisAvailable(String status) {
-        List<Pet> actualPets = petApi.getPetByStatus(status);
+        List<Pet> actualPets = petApi.getPetsByStatus(status);
         System.out.println("ibag");
     }
 
