@@ -4,10 +4,9 @@ import bdd.automation.api.support.api.PetApi;
 import bdd.automation.api.support.domain.Pet;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.cucumber.java.pt.Dado;
-import io.cucumber.java.pt.Entao;
-import io.cucumber.java.pt.Então;
-import io.cucumber.java.pt.Quando;
+import io.cucumber.java.pt.*;
+import io.restassured.response.Response;
+import org.apache.http.HttpStatus;
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.Matcher;
 import org.hamcrest.MatcherAssert;
@@ -48,5 +47,20 @@ public class PetStepDefinitions {
     @Entao("eu recebo a lista de animais available")
     public void euReceboAListaDeAnimaisAvailable() {
         MatcherAssert.assertThat(actualPets, Matchers.is(Matchers.not(Matchers.empty())));
+    }
+
+    @E("eu recebo uma outra lista de animais {word}")
+    public void euReceboUmaOutraListaDeAnimaisAvailable(String status) {
+        Response actualAvailableResponse = petApi.getPetsResponseByStatus(status);
+
+        actualPets = actualAvailableResponse.body().jsonPath().getList("", Pet.class);
+
+        actualAvailableResponse
+                .then()
+                    .statusCode(HttpStatus.SC_OK)
+                .body(
+                        "size()", Matchers.is(actualPets.size()),
+                        "findAll { it.status == 'available' }.size()", Matchers.is(actualPets.size())
+                );
     }
 }
