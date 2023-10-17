@@ -40,7 +40,7 @@ public class PetStepDefinitions {
 
     @Quando("eu pesquiso por todos os animais {word}")
     public void euPesquisoPorTodosOsAnimaisAvailable(String status) {
-        List<Pet> actualPets = petApi.getPetsByStatus(status);
+        actualPets = petApi.getPetsByStatus(status);
         System.out.println("ibag");
     }
 
@@ -66,7 +66,7 @@ public class PetStepDefinitions {
 
     @Entao("eu recebo a lista com {int} animal/animais")
     public void euReceboAListaComAnimais(int petQuantity) {
-        MatcherAssert.assertThat(actualPets, Matchers.is(petQuantity));
+        MatcherAssert.assertThat(actualPets.size(), Matchers.is(petQuantity));
     }
 
     @Dado("que eu não possua animais {word}")
