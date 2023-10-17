@@ -2,20 +2,16 @@ package bdd.automation.api.steps;
 
 import bdd.automation.api.support.api.PetApi;
 import bdd.automation.api.support.domain.Pet;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.cucumber.java.pt.*;
+import io.cucumber.java.pt.Dado;
+import io.cucumber.java.pt.E;
+import io.cucumber.java.pt.Entao;
+import io.cucumber.java.pt.Quando;
 import io.restassured.response.Response;
 import org.apache.http.HttpStatus;
-import org.hamcrest.CoreMatchers;
-import org.hamcrest.Matcher;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 
 import java.util.List;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
 
 public class PetStepDefinitions {
 
@@ -52,11 +48,12 @@ public class PetStepDefinitions {
                     .statusCode(HttpStatus.SC_OK).
                 body(
                     "size()", Matchers.is(actualPets.size()),
+                        // findAll { it.status == 'available' }.size() faz iteracao e verifica se o status é igual a 'status' e retorne o tamanho
                         "findAll { it.status == 'available' }.size()", Matchers.is(actualPets.size())
                 );
     }
 
-    @Entao("eu recebo a lista com {int} animal/animais")
+    @Entao("eu recebo a lista com {} animal/animais")
     public void euReceboAListaComAnimais(int petsQuantity) {
         MatcherAssert.assertThat(actualPets.size(), Matchers.is(petsQuantity));
     }
