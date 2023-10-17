@@ -15,62 +15,56 @@ import org.hamcrest.Matchers;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 
 public class PetStepDefinitions {
 
     private PetApi petApi;
-
     private List<Pet> actualPets;
-
     public PetStepDefinitions() {
         petApi = new PetApi();
     }
 
     @Dado("que eu possua animais {word}")
-    public void queEuPossuoAnimaisAvailable() throws JsonProcessingException {
-
-//        Pet pet = Pet.builder().build();
-//        ObjectMapper mapper = new ObjectMapper();
-//        String json = mapper.writeValueAsString(pet); // transforma o objeto java em json
-//        System.out.println(json);
-
-        // seed
-
+    public void queEuPossuaAnimaisAvailable(String status) {
     }
+
 
     @Quando("eu pesquiso por todos os animais {word}")
     public void euPesquisoPorTodosOsAnimaisAvailable(String status) {
         actualPets = petApi.getPetsByStatus(status);
-        System.out.println("ibag");
     }
+
 
     @Entao("eu recebo a lista de animais available")
     public void euReceboAListaDeAnimaisAvailable() {
-        MatcherAssert.assertThat(actualPets, Matchers.is(Matchers.not(Matchers.empty())));
+        MatcherAssert.assertThat(actualPets, Matchers.is(Matchers.empty()));
+        assertThat(actualPets, is(not(empty())));
     }
 
     @E("eu recebo uma outra lista de animais {word}")
     public void euReceboUmaOutraListaDeAnimaisAvailable(String status) {
-        Response actualAvailableResponse = petApi.getPetsResponseByStatus(status);
+        Response actualPetsResponse = petApi.getPetsResponseByStatus(status);
 
-        actualPets = actualAvailableResponse.body().jsonPath().getList("", Pet.class);
+        actualPets = actualPetsResponse.body().jsonPath().getList("", Pet.class);
 
-        actualAvailableResponse
+        actualPetsResponse
                 .then()
-                    .statusCode(HttpStatus.SC_OK)
-                .body(
-                        "size()", Matchers.is(actualPets.size()),
+                    .statusCode(HttpStatus.SC_OK).
+                body(
+                    "size()", Matchers.is(actualPets.size()),
                         "findAll { it.status == 'available' }.size()", Matchers.is(actualPets.size())
                 );
     }
 
     @Entao("eu recebo a lista com {int} animal/animais")
-    public void euReceboAListaComAnimais(int petQuantity) {
-        MatcherAssert.assertThat(actualPets.size(), Matchers.is(petQuantity));
+    public void euReceboAListaComAnimais(int petsQuantity) {
+        MatcherAssert.assertThat(actualPets.size(), Matchers.is(petsQuantity));
     }
 
     @Dado("que eu não possua animais {word}")
     public void queEuNãoPossuaAnimaisSold(String status) {
         petApi.deletePetsByStatus(status);
     }
+
 }
