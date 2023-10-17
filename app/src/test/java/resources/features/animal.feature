@@ -33,3 +33,8 @@ Funcionalidade: Gerenciamento de um animal da Loja
       | estado | quantidade |
       | sold   | 0          |
 
+  Cenario: Lista de animais disponíveis para a venda
+    Dado que eu possua animais available
+    Quando pesquiso por todos os animais available
+    Entao recebo a lista  com 7 animais available
+    E 3 animais possuem o nome Lion
