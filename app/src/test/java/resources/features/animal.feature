@@ -19,17 +19,17 @@ Funcionalidade: Gerenciamento de um animal da Loja
     Quando eu pesquiso por todos os animais sold
     Entao eu recebo a lista com 0 animal
 
-  Esquema do Cenario: Lista animais pelo seu estado de venda
+  Esquema do Cenário: Lista animais pelo seu estado de venda
     Dado que eu não possua animais sold
     Quando eu pesquiso por todos os animais <estado>
-    Entao eu recebo a lista com <quantidade> animais
+    Então eu recebo a lista com <quantidade> animais
 
     Exemplos: Animais em estoque
-      | estado    | quantidade
-      | available | 8
-      | pending   | 3
+      | estado    | quantidade |
+      | available | 7          |
+      | pending   | 2          |
 
     Exemplos: Animais sem estoque
-      | estado | quantidade
-      | sold   | 1
+      | estado | quantidade |
+      | sold   | 0          |
 
