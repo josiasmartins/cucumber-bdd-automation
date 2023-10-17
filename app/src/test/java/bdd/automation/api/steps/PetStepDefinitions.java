@@ -38,8 +38,7 @@ public class PetStepDefinitions {
 
     @Entao("eu recebo a lista de animais available")
     public void euReceboAListaDeAnimaisAvailable() {
-        MatcherAssert.assertThat(actualPets, Matchers.is(Matchers.empty()));
-        assertThat(actualPets, is(not(empty())));
+        MatcherAssert.assertThat(actualPets, Matchers.is(Matchers.not(Matchers.empty())));
     }
 
     @E("eu recebo uma outra lista de animais {word}")
