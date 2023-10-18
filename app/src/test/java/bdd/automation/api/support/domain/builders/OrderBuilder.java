@@ -40,7 +40,7 @@ public class OrderBuilder {
         return this;
     }
 
-    public OrderBuilder withComplete(boolean complete) {
+    public OrderBuilder withComplete(Boolean complete) {
         this.complete = complete;
         return this;
     }
@@ -57,11 +57,11 @@ public class OrderBuilder {
     }
 
     public void reset() {
-        id = 1;
-        petId = 30;
-        quantity = 1;
-        shipDate = "20/02/21";
-        status = "approvade";
+        id = 5;
+        petId = 22;
+        quantity = 10;
+        shipDate = "2021-02-20";
+        status = "approved";
         complete = true;
     }
 
