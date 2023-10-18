@@ -5,6 +5,7 @@ import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import org.apache.http.HttpStatus;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ public class PetApi {
 
     private static final String FIND_PETS_BY_STATUS_ENPOINT = "http://localhost:12345/api/v3/pet/findByStatus?status={status}";
     private static final String ENDPOINT_PET = "http://localhost:12345/api/v3/pet/{id}";
+    private static final String CREATE_ENDPOINT_PET = "http://localhost:12345/api/v3/pet";
 
 
     public List<Pet> getPetsByStatus(String status) {
@@ -54,6 +56,16 @@ public class PetApi {
         Response response = httpRequest.get(FIND_PETS_BY_STATUS_ENPOINT);
         JsonPath jsonPath = response.body().jsonPath();
         return jsonPath.getList("", Pet.class);
+    }
+
+    public Pet createPet(Pet pet) {
+        return given()
+                .body(pet).
+           when()
+                .post(CREATE_ENDPOINT_PET).
+           then()
+                .statusCode(HttpStatus.SC_OK)
+                .extract().body().as(Pet.class); // transforma o json do retorno na classe Pet do java
     }
 
 }

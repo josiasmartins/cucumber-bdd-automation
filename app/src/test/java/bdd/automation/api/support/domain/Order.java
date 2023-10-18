@@ -1,14 +1,13 @@
 package bdd.automation.api.support.domain;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Store {
+public class Order {
 
     private int id;
     private int petId;
