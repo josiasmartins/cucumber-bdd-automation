@@ -1,5 +1,6 @@
 package bdd.automation.api.steps;
 
+import bdd.automation.api.support.api.PetApi;
 import bdd.automation.api.support.api.UserApi;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -7,14 +8,18 @@ import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.http.ContentType;
+
+import static io.restassured.RestAssured.given;
 //import org.junit.Before;
 
 public class Config {
 
-    private final UserApi userApi;
+    private UserApi userApi;
+    private PetApi petApi;
 
     public Config() {
         userApi= new UserApi();
+        petApi = new PetApi();
     }
 
     @Before
@@ -43,6 +48,12 @@ public class Config {
     public void deleteAllUsers() {
         System.out.println("delete users");
     }
+
+    @After("@DeleteExtraPets")
+    public void deleteExtraPets() {
+        petApi.deleteExtraPets("available");
+    }
+
 
 //    @Before(order = 1)
 //    public void doSomething() {

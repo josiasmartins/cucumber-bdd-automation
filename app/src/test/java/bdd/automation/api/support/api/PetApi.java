@@ -7,6 +7,8 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.apache.http.HttpStatus;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
@@ -66,6 +68,29 @@ public class PetApi {
            then()
                 .statusCode(HttpStatus.SC_OK)
                 .extract().body().as(Pet.class); // transforma o json do retorno na classe Pet do java
+    }
+
+    public void deleteExtraPets(String status) {
+        List<Integer> petsId = given()
+                .pathParam("status", status).
+            when()
+                .get(FIND_PETS_BY_STATUS_ENPOINT).
+            thenReturn()
+                .path("id");
+
+        List<Integer> petsToKeep = Arrays.asList(1, 2, 3, 7, 8, 9, 10);
+
+        for (int petId : petsId) {
+            if (!petsToKeep.contains(petId)) {
+                // delete
+                given()
+                        .pathParam("id", petId)
+                        .delete(ENDPOINT_PET).
+                then()
+                        .statusCode(HttpStatus.SC_OK);
+
+            }
+        }
     }
 
 }
